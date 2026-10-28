@@ -233,11 +233,11 @@ export function Slider({
 }) {
   const pct = ((value - min) / (max - min)) * 100;
   return (
-    <div className="slider" style={{ "--pct": `${pct}%` } as React.CSSProperties}>
-      <div className="slider-track">
-        <div className="slider-fill" />
+    <div className="range" style={{ "--pct": `${pct}%` } as React.CSSProperties}>
+      <div className="range-track">
+        <div className="range-fill" />
       </div>
-      <div className="slider-thumb" />
+      <div className="range-thumb" />
       <input
         type="range"
         aria-label={label}
