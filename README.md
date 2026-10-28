@@ -20,7 +20,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/hero-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="docs/images/hero-light.png">
-    <img src="docs/images/hero-dark.png" width="820" alt="Track with three screens as tabs. The Holster screen shows four terminals with git output; one is ringed because Claude Code needs permission to run Bash, and the Track tab shows a spinner while an agent works there">
+    <img src="docs/images/hero-dark.png" width="820" alt="Track with three screens as tabs: the Holster screen shows four terminals side by side with git history, a diff summary and a folder listing">
   </picture>
 </p>
 
