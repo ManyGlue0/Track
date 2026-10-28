@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Track's sparse package: no files of its own, it gives Track's install folder
+     (the external location) a package identity so its Explorer command can sit
+     in the top level of the Windows 11 context menu. Registered by Track from
+     Settings; the COM class is shell-ext (track_shell.dll). -->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:desktop5="http://schemas.microsoft.com/appx/manifest/desktop/windows10/5"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap uap10 desktop4 desktop5 com rescap">
+  <Identity Name="Track.ExplorerMenu" Publisher="CN=Track" Version="1.0.0.0" ProcessorArchitecture="x64" />
+  <Properties>
+    <DisplayName>Track</DisplayName>
+    <PublisherDisplayName>Track</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+    <uap10:AllowExternalContent>true</uap10:AllowExternalContent>
+  </Properties>
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+    <rescap:Capability Name="unvirtualizedResources" />
+  </Capabilities>
+  <Applications>
+    <Application Id="Track" Executable="track.exe" uap10:TrustLevel="mediumIL" uap10:RuntimeBehavior="win32App">
+      <uap:VisualElements AppListEntry="none" DisplayName="Track" Description="Every terminal you run, in one calm window"
+        BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" />
+      <Extensions>
+        <desktop4:Extension Category="windows.fileExplorerContextMenus">
+          <desktop4:FileExplorerContextMenus>
+            <desktop5:ItemType Type="Directory">
+              <desktop5:Verb Id="OpenInTrack" Clsid="6f1c3a52-8d4e-4b7a-9c2f-7a1e5b3d9c01" />
+            </desktop5:ItemType>
+            <desktop5:ItemType Type="Directory\Background">
+              <desktop5:Verb Id="OpenInTrack" Clsid="6f1c3a52-8d4e-4b7a-9c2f-7a1e5b3d9c01" />
+            </desktop5:ItemType>
+          </desktop4:FileExplorerContextMenus>
+        </desktop4:Extension>
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:SurrogateServer DisplayName="Track: Open in Track">
+              <com:Class Id="6f1c3a52-8d4e-4b7a-9c2f-7a1e5b3d9c01" Path="track_shell.dll" ThreadingModel="STA" />
+            </com:SurrogateServer>
+          </com:ComServer>
+        </com:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+</Package>

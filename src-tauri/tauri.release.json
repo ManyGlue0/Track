@@ -1,0 +1,9 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "build": {
+    "beforeBuildCommand": "cargo build --release -p track-shell && pnpm build"
+  },
+  "bundle": {
+    "resources": { "../target/release/track_shell.dll": "track_shell.dll" }
+  }
+}

@@ -1,0 +1,10 @@
+node_modules
+dist
+target
+src-tauri/gen
+*.log
+scripts/harness/*.png
+
+# Signing keys never belong in the repo: they live in %USERPROFILE%\.tauri\
+*.key
+*.key.pub

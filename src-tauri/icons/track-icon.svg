@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="1024" height="1024">
+  <!-- Track: a screen of terminals, the first one awake with a prompt.
+       Master artwork for every icon size; regenerate with `pnpm app-icon`. -->
+  <rect x="14" y="14" width="110" height="110" rx="30" fill="#7AD6AF"/>
+  <rect x="132" y="14" width="110" height="110" rx="30" fill="#89BCF2"/>
+  <rect x="14" y="132" width="110" height="110" rx="30" fill="#B2A2F5"/>
+  <rect x="132" y="132" width="110" height="110" rx="30" fill="#F2A887"/>
+  <path d="M45 51 L69 69 L45 87" fill="none" stroke="#1D5741" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M77 90 L96 90" fill="none" stroke="#1D5741" stroke-width="15" stroke-linecap="round"/>
+</svg>

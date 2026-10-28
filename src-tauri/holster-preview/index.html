@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Track</title>
+    <style>
+      :root {
+        --text: #1a1a1f;
+        --text-2: #55555f;
+        --text-3: #8b8b95;
+        --surface: rgba(255, 255, 255, 0.7);
+        --border: rgba(20, 20, 40, 0.08);
+        --pending: #e2ab3f;
+        --online: #3fbf7f;
+        color-scheme: light;
+      }
+      :root[data-theme="dark"] {
+        --text: #f2f2f5;
+        --text-2: #b4b4be;
+        --text-3: #85858f;
+        --surface: rgba(255, 255, 255, 0.055);
+        --border: rgba(255, 255, 255, 0.08);
+        --pending: #eac168;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: transparent;
+        color: var(--text);
+        font: 13.5px/1.45 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        user-select: none;
+        cursor: default;
+      }
+      main {
+        padding: 14px 14px 14px;
+      }
+      .head {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        height: 16px;
+        margin: 0 2px 10px;
+      }
+      .label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-3);
+        letter-spacing: 0.01em;
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--text-3);
+        opacity: 0.6;
+      }
+      .running .dot {
+        background: var(--online);
+        opacity: 1;
+        box-shadow: 0 0 0 3px rgba(63, 191, 127, 0.17);
+      }
+      .meta {
+        margin-left: auto;
+        font-size: 11.5px;
+        color: var(--text-3);
+        font-variant-numeric: tabular-nums;
+      }
+      .rows {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 46px;
+        padding: 0 10px;
+        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+      .well {
+        width: 28px;
+        height: 28px;
+        flex: none;
+        border-radius: 9px;
+        display: grid;
+        place-items: center;
+        color: var(--ink);
+        background: var(--bg);
+      }
+      .well svg {
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.1;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .swatch {
+        width: 9px;
+        height: 9px;
+        margin: 0 4px 0 2px;
+        border-radius: 50%;
+        flex: none;
+        background: var(--strong);
+      }
+      .text {
+        min-width: 0;
+        flex: 1;
+      }
+      .title {
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .desc {
+        font-size: 11.5px;
+        color: var(--text-3);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .count {
+        flex: none;
+        font-size: 11.5px;
+        color: var(--text-3);
+        font-variant-numeric: tabular-nums;
+      }
+      .active .title::after {
+        content: "";
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        margin: 0 0 2px 7px;
+        border-radius: 50%;
+        background: var(--text-3);
+      }
+      .empty {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 46px;
+        padding: 0 4px;
+        color: var(--text-3);
+        font-size: 12.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="head">
+        <span class="dot"></span>
+        <span class="label">Track</span>
+        <span class="meta" id="meta"></span>
+      </div>
+      <div class="rows" id="rows"></div>
+    </main>
+    <script>
+      const PALETTE = {
+        light: {
+          mint: ["#E2F5EB", "#46B086", "#1D5741"],
+          peach: ["#FDE7DC", "#E8916A", "#773C20"],
+          lavender: ["#ECE7FB", "#8D79DF", "#42338B"],
+          sky: ["#E1EEFC", "#5797DE", "#1D4B7C"],
+          butter: ["#FAF1D2", "#D2A82E", "#6A500D"],
+          rose: ["#FCE3E9", "#DF7592", "#7A253E"],
+          sage: ["#E7EEDF", "#86A271", "#3B4F2D"],
+          lilac: ["#F3E5F7", "#B679C9", "#5B2B6D"],
+          apricot: ["#FDEAD5", "#E99F55", "#764311"],
+          mist: ["#E7EBF0", "#8897AB", "#374252"],
+          none: ["#FAF1D2", "#D2A82E", "#6A500D"],
+        },
+        dark: {
+          mint: ["#1E3A2F", "#7AD6AF", "#CDF2E1"],
+          peach: ["#41291E", "#F2A887", "#FBDACB"],
+          lavender: ["#2E2848", "#B2A2F5", "#E2DBFD"],
+          sky: ["#1E2F47", "#89BCF2", "#D4E7FB"],
+          butter: ["#3A331E", "#EACA68", "#F6EAC2"],
+          rose: ["#42232C", "#F29AB1", "#FBD8E1"],
+          sage: ["#293224", "#A8C394", "#DCE7D3"],
+          lilac: ["#38273E", "#D19EE1", "#F0DBF6"],
+          apricot: ["#3F2F1D", "#F3BA7F", "#FBE2C8"],
+          mist: ["#292E36", "#A8B4C4", "#DDE2E9"],
+          none: ["#3A331E", "#EACA68", "#F6EAC2"],
+        },
+      };
+      // Lucide paths: hand, circle-check, bell-ring, bell.
+      const ICONS = {
+        waiting:
+          '<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
+        done: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+        notify:
+          '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/>',
+        bell: '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>',
+      };
+      const LABELS = { waiting: "Needs you", done: "Done", notify: "Notification", bell: "Bell" };
+
+      const q = new URLSearchParams(location.search);
+      let theme = q.get("theme") === "dark" ? "dark" : "light";
+      let state = null;
+      const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
+      function setTheme(t) {
+        theme = t === "dark" ? "dark" : "light";
+        document.documentElement.dataset.theme = theme;
+        render();
+      }
+      function setRunning(on) {
+        document.body.classList.toggle("running", !!on);
+      }
+      function colors(key) {
+        const p = PALETTE[theme][key] || PALETTE[theme].none;
+        return `--bg:${p[0]};--strong:${p[1]};--ink:${p[2]}`;
+      }
+      function plural(n, one, many) {
+        return `${n} ${n === 1 ? one : many}`;
+      }
+
+      function render() {
+        const rows = document.getElementById("rows");
+        const meta = document.getElementById("meta");
+        if (!state) return;
+        const needs = state.needs || [];
+        const screens = state.screens || [];
+        let html = "";
+        let count = 0;
+        if (needs.length) {
+          meta.textContent = needs.length > 1 ? `${needs.length} need you` : "";
+          for (const n of needs.slice(0, 3)) {
+            const what = n.kind === "waiting" || n.kind === "notify" ? n.message || LABELS[n.kind] : LABELS[n.kind] || "Bell";
+            html += `<div class="row" style="${colors(n.color)}"><div class="well"><svg viewBox="0 0 24 24">${ICONS[n.kind] || ICONS.bell}</svg></div><div class="text"><div class="title">${esc(n.name)}</div><div class="desc">${esc(what)} · ${esc(n.screen)}</div></div></div>`;
+            count++;
+          }
+        } else if (screens.length) {
+          const total = screens.reduce((a, s) => a + s.count, 0);
+          meta.textContent = total ? plural(total, "terminal", "terminals") : "";
+          for (const s of screens.slice(0, 3)) {
+            const bits = [s.count ? plural(s.count, "terminal", "terminals") : "Empty"];
+            if (s.working) bits.push(`${s.working} working`);
+            else if (s.count && !s.running) bits.push("not started");
+            html += `<div class="row ${s.active ? "active" : ""}" style="${colors(s.color)}"><span class="swatch" style="${s.color ? "" : "background:var(--text-3);opacity:.5"}"></span><div class="text"><div class="title">${esc(s.name)}</div><div class="desc">${bits.join(" · ")}</div></div></div>`;
+            count++;
+          }
+          if (screens.length > 3) meta.textContent += ` · ${plural(screens.length, "screen", "screens")}`;
+        } else {
+          html = `<div class="empty">No screens yet. Open Track to start one.</div>`;
+          meta.textContent = "";
+          count = 1;
+        }
+        rows.innerHTML = html;
+        const n = Math.max(1, Math.min(3, count));
+        const height = 14 + 16 + 10 + n * 46 + (n - 1) * 6 + 14;
+        parent.postMessage({ holster: "resize", width: 300, height }, "*");
+      }
+
+      async function refresh() {
+        try {
+          state = await fetch("state.json", { cache: "no-store" }).then((r) => r.json());
+        } catch {
+          state = state || { needs: [], screens: [] };
+        }
+        render();
+      }
+
+      setTheme(q.get("theme"));
+      setRunning(q.get("running") === "1");
+      refresh();
+      addEventListener("message", (e) => {
+        if (e.data?.holster === "theme") setTheme(e.data.value);
+        if (e.data?.holster === "status") setRunning(e.data.running);
+        if (e.data?.holster === "show") refresh();
+      });
+    </script>
+  </body>
+</html>
