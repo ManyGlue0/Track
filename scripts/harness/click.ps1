@@ -1,4 +1,5 @@
 param([int]$X, [int]$Y, [switch]$Right, [switch]$Middle, [switch]$Double)
+$Repo = (Resolve-Path "$PSScriptRoot\..\..").Path
 # Clicks at (X, Y) relative to Track's window top-left, in physical pixels.
 Add-Type @"
 using System;
@@ -14,7 +15,7 @@ public static class M {
 }
 "@
 [M]::SetProcessDPIAware() | Out-Null
-$h = (Get-Process track | Where-Object { $_.MainWindowHandle -ne 0 -and $_.Path -like "E:\GitProjects\*" } | Select-Object -First 1).MainWindowHandle
+$h = (Get-Process track | Where-Object { $_.MainWindowHandle -ne 0 -and $_.Path -like "$Repo\*" } | Select-Object -First 1).MainWindowHandle
 [M]::keybd_event(0x12, 0, 0, [UIntPtr]::Zero); [M]::keybd_event(0x12, 0, 2, [UIntPtr]::Zero)
 [M]::SetForegroundWindow($h) | Out-Null
 $r = New-Object M+RECT

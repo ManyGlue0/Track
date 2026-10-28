@@ -1,4 +1,5 @@
 param([string]$Out = "$PSScriptRoot\shot.png", [string]$Title = "Track")
+$Repo = (Resolve-Path "$PSScriptRoot\..\..").Path
 Add-Type -AssemblyName System.Drawing
 Add-Type @"
 using System;
@@ -12,7 +13,7 @@ public static class W {
 }
 "@
 [W]::SetProcessDPIAware() | Out-Null
-$h = (Get-Process track | Where-Object { $_.MainWindowHandle -ne 0 -and $_.Path -like "E:\GitProjects\*" } | Select-Object -First 1).MainWindowHandle
+$h = (Get-Process track | Where-Object { $_.MainWindowHandle -ne 0 -and $_.Path -like "$Repo\*" } | Select-Object -First 1).MainWindowHandle
 if ($h -eq [IntPtr]::Zero) { Write-Output "window not found"; exit 1 }
 $r = New-Object W+RECT
 [W]::GetWindowRect($h, [ref]$r) | Out-Null

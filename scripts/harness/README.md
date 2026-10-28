@@ -2,7 +2,7 @@
 
 Small PowerShell scripts for driving the dev build (`pnpm dev:app`, "Track Dev")
 and checking it with screenshots. They target the `track.exe` under
-`E:\GitProjects\`, never the installed one. Coordinates are window-relative
+this repo, never the installed one. Coordinates are window-relative
 physical pixels (1280×800 window, scale 1.0).
 
 - `shot.ps1 [-Out file.png]`: screenshot of the Track window.

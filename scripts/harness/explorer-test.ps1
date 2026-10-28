@@ -1,4 +1,4 @@
-param([string]$Folder = "E:\GitProjects\Terminal-holster", [string]$Out = "$PSScriptRoot\explorer.png", [switch]$Invoke)
+param([string]$Folder = (Resolve-Path "$PSScriptRoot\..\..").Path, [string]$Out = "$PSScriptRoot\explorer.png", [switch]$Invoke)
 # Opens an Explorer window on $Folder, right-clicks its background, and screenshots the menu.
 Add-Type -AssemblyName System.Drawing, System.Windows.Forms
 Add-Type @"

@@ -138,7 +138,7 @@ Windows 11 only shows packaged commands at the top of that menu, so Track ships 
 
 ## Holster
 
-Track is also a [Holster](https://github.com/ManyGlue0/Holster) app. With Holster running, Track gets a tile in the dock with a live preview of what each screen is doing, Holster's tab glows when a terminal needs you, and, while Track is in the background, Holster shows a notification ("Claude needs your permission to use Bash") with a button that opens that terminal. All of this is optional: without Holster, Track works the same.
+Track is also a [Holster](https://github.com/ManyGlue0/Holster) app. With Holster running, Track gets a tile in the dock with a live preview of what each screen is doing, Holster's tab glows when a terminal needs you, and, while Track is in the background, Holster shows a notification ("Claude needs your permission to use Bash") with a button that opens that terminal. There is nothing to set up: Track adds itself to the dock whenever Holster is running, and Settings → General → Holster shows the connection. All of this is optional: without Holster, Track works the same.
 
 ## Your data
 
@@ -181,6 +181,17 @@ pnpm app-icon           # every icon size from src-tauri/icons/track-icon.svg
 `pnpm dev:app` runs under its own identity (`app.track.dev`), so it never takes over the installed Track's Holster tile, hooks or Explorer menu. `scripts/harness/` has the small PowerShell scripts used to drive and screenshot it.
 
 Releases are signed for the in-app updater. `pnpm release` needs Track's private key from `pnpm tauri signer generate` (`TRACK_SIGNING_KEY`, by default `%USERPROFILE%\.tauri\track.key`) and its password (`TRACK_SIGNING_KEY_PASSWORD`), in the shell or as Windows user variables. Attach the installer and `latest.json` to the GitHub release; the updater reads `releases/latest/download/latest.json`.
+
+## Credits
+
+Track stands on these open-source projects, each under its own license:
+
+- [Tauri](https://tauri.app) (MIT / Apache-2.0): the app shell, window and installer.
+- [xterm.js](https://xtermjs.org) (MIT): draws the terminals.
+- [portable-pty](https://github.com/wezterm/wezterm/tree/main/pty), from WezTerm (MIT): runs shells on Windows' ConPTY.
+- [Lucide](https://lucide.dev) (ISC): the icons.
+- [Framer Motion](https://motion.dev) (MIT) for animation, [dnd-kit](https://dndkit.com) (MIT) for dragging tabs, [zustand](https://github.com/pmndrs/zustand) (MIT) for state.
+- Reporting the folder from PowerShell follows the OSC 9;9 approach in [Windows Terminal's documentation](https://learn.microsoft.com/windows/terminal/tutorials/new-tab-same-directory).
 
 ## License
 

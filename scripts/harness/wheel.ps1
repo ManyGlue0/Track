@@ -1,4 +1,5 @@
 param([int]$X, [int]$Y, [int]$Notches = -10)
+$Repo = (Resolve-Path "$PSScriptRoot\..\..").Path
 Add-Type @"
 using System;
 using System.Runtime.InteropServices;
@@ -11,7 +12,7 @@ public static class Wh {
 }
 "@
 [Wh]::SetProcessDPIAware() | Out-Null
-$h = (Get-Process track | Where-Object { $_.MainWindowHandle -ne 0 -and $_.Path -like "E:\GitProjects\*" } | Select-Object -First 1).MainWindowHandle
+$h = (Get-Process track | Where-Object { $_.MainWindowHandle -ne 0 -and $_.Path -like "$Repo\*" } | Select-Object -First 1).MainWindowHandle
 $r = New-Object Wh+RECT
 [Wh]::GetWindowRect($h, [ref]$r) | Out-Null
 [Wh]::SetCursorPos($r.L + $X, $r.T + $Y) | Out-Null

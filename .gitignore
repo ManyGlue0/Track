@@ -8,3 +8,10 @@ scripts/harness/*.png
 # Signing keys never belong in the repo: they live in %USERPROFILE%\.tauri\
 *.key
 *.key.pub
+
+# Local environment and OS files
+.env
+.env.*
+Thumbs.db
+desktop.ini
+.DS_Store

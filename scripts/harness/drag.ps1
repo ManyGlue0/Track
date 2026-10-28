@@ -1,4 +1,5 @@
 param([int]$X1, [int]$Y1, [int]$X2, [int]$Y2, [string]$ShotMid = "")
+$Repo = (Resolve-Path "$PSScriptRoot\..\..").Path
 # Drags with the left button from (X1,Y1) to (X2,Y2), window-relative physical px.
 Add-Type @"
 using System;
@@ -12,7 +13,7 @@ public static class D {
 }
 "@
 [D]::SetProcessDPIAware() | Out-Null
-$h = (Get-Process track | Where-Object { $_.MainWindowHandle -ne 0 -and $_.Path -like "E:\GitProjects\*" } | Select-Object -First 1).MainWindowHandle
+$h = (Get-Process track | Where-Object { $_.MainWindowHandle -ne 0 -and $_.Path -like "$Repo\*" } | Select-Object -First 1).MainWindowHandle
 $r = New-Object D+RECT
 [D]::GetWindowRect($h, [ref]$r) | Out-Null
 [D]::SetCursorPos($r.L + $X1, $r.T + $Y1) | Out-Null

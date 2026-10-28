@@ -43,7 +43,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDE3M0RFODhCNTFDMjdFMTEKUldRUmZzSlJpK2c5Rnh4WUxCM2l5ZTI1SGpucnlwVEZ6VVlDSm83TGRTMVgrUzc5N25VV1UwSGIK",
       "endpoints": ["https://github.com/ManyGlue0/Track/releases/latest/download/latest.json"],
       "windows": { "installMode": "passive" }
     }
